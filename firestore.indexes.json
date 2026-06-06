@@ -1,0 +1,21 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "annonces",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "utilisateur_id", "order": "ASCENDING" },
+        { "fieldPath": "date_publication", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "annonces",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "statut", "order": "ASCENDING" },
+        { "fieldPath": "date_publication", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

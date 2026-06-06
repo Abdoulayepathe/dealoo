@@ -1,0 +1,30 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Annonces : lecture publique, écriture authentifiée
+    match /annonces/{annonceId} {
+      allow read: if true;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+
+    // Utilisateurs : lecture publique, modifier son propre profil
+    match /utilisateurs/{userId} {
+      allow read: if true;
+      allow write: if request.auth != null;
+    }
+
+    // Signalements : tout user connecté peut créer, lecture/modif par admins
+    match /signalements/{signalementId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null;
+      allow update, delete: if request.auth != null;
+    }
+
+    // Favoris
+    match /favoris/{favoriId} {
+      allow read, write: if request.auth != null;
+    }
+  }
+}
