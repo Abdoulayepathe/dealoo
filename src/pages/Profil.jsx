@@ -95,20 +95,22 @@ export default function Profil() {
   // ── Formulaire modification profil ───────────────────────
   const [editing, setEditing] = useState(false)
   const [formProfil, setFormProfil] = useState({
-    prenom:    profil?.prenom    || '',
-    nom:       profil?.nom       || '',
-    telephone: profil?.telephone || '',
-    ville:     profil?.ville     || 'Conakry',
+    prenom:      profil?.prenom    || '',
+    nom:         profil?.nom       || '',
+    telephone:   profil?.telephone || '',
+    ville:       profil?.ville     || 'Conakry',
+    type_compte: profil?.type_compte || 'les-deux',
   })
   const [savingProfil, setSavingProfil] = useState(false)
 
   useEffect(() => {
     if (profil) {
       setFormProfil({
-        prenom:    profil.prenom    || '',
-        nom:       profil.nom       || '',
-        telephone: profil.telephone || '',
-        ville:     profil.ville     || 'Conakry',
+        prenom:      profil.prenom      || '',
+        nom:         profil.nom         || '',
+        telephone:   profil.telephone   || '',
+        ville:       profil.ville       || 'Conakry',
+        type_compte: profil.type_compte || 'les-deux',
       })
     }
   }, [profil])
@@ -122,11 +124,12 @@ export default function Profil() {
       if (!tel.startsWith('224')) tel = '224' + (tel.startsWith('0') ? tel.slice(1) : tel)
 
       await updateDoc(doc(db, 'utilisateurs', user.uid), {
-        prenom:    formProfil.prenom.trim(),
-        nom:       formProfil.nom.trim(),
-        telephone: tel,
-        whatsapp:  tel,
-        ville:     formProfil.ville,
+        prenom:      formProfil.prenom.trim(),
+        nom:         formProfil.nom.trim(),
+        telephone:   tel,
+        whatsapp:    tel,
+        ville:       formProfil.ville,
+        type_compte: formProfil.type_compte,
       })
       showToast('✅ Profil mis à jour !', true)
       setEditing(false)
@@ -556,6 +559,38 @@ export default function Profil() {
                           {VILLES.map(v => <option key={v}>{v}</option>)}
                         </select>
                       </div>
+                    </div>
+
+                    {/* Type de compte */}
+                    <div className="field">
+                      <label className="field-label">Type de compte</label>
+                      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8 }}>
+                        {[
+                          { val:'acheteur',  ico:'🛒', label:'Acheteur',  desc:'Acheter seulement' },
+                          { val:'vendeur',   ico:'💼', label:'Vendeur',   desc:'Vendre / donner' },
+                          { val:'les-deux',  ico:'🔄', label:'Les deux',  desc:'Acheter + vendre' },
+                        ].map(opt => (
+                          <button key={opt.val} type="button"
+                            onClick={() => setFormProfil(f=>({...f, type_compte:opt.val}))}
+                            style={{ padding:'12px 8px', borderRadius:10, cursor:'pointer',
+                              border: formProfil.type_compte === opt.val
+                                ? '2px solid var(--green)' : '1.5px solid var(--g2)',
+                              background: formProfil.type_compte === opt.val
+                                ? 'var(--green-l)' : 'var(--white)',
+                              textAlign:'center', transition:'.15s' }}>
+                            <div style={{ fontSize:22, marginBottom:4 }}>{opt.ico}</div>
+                            <div style={{ fontSize:12, fontWeight:700, color:'var(--t1)' }}>{opt.label}</div>
+                            <div style={{ fontSize:10, color:'var(--t3)', marginTop:2 }}>{opt.desc}</div>
+                          </button>
+                        ))}
+                      </div>
+                      {formProfil.type_compte === 'acheteur' && (
+                        <div style={{ fontSize:12, color:'var(--orange)', marginTop:8,
+                          background:'#FFF7ED', padding:'8px 12px', borderRadius:8,
+                          border:'1px solid #FED7AA' }}>
+                          ⚠️ En mode Acheteur, tu ne pourras pas publier d'annonces
+                        </div>
+                      )}
                     </div>
 
                     <div style={{ background:'var(--green-l)', border:'1px solid var(--green-m)',

@@ -2,24 +2,7 @@ import { useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
-
-const ARTICLES = [
-  { id:1,  titre:"Robe bazin brodée",      prix:0,        don:true,  cat:"Mode Femme", etat:"bon",   lieu:"Ratoma",  emoji:"👗", bg:"#E8F5F0", boost:false },
-  { id:2,  titre:"iPhone 12 64Go",         prix:3200000,  don:false, cat:"Téléphones", etat:"bon",   lieu:"Kaloum",  emoji:"📱", bg:"#EEF4FF", boost:true  },
-  { id:3,  titre:"Moto Jakarta 125cc",     prix:8500000,  don:false, cat:"Motos",      etat:"usage", lieu:"Matoto",  emoji:"🛵", bg:"#EAF3DE", boost:false },
-  { id:4,  titre:"Nike Air Force 1",       prix:280000,   don:false, cat:"Mode Homme", etat:"neuf",  lieu:"Dixinn",  emoji:"👟", bg:"#F9F5FF", boost:false },
-  { id:5,  titre:"Sac en cuir marron",     prix:180000,   don:false, cat:"Mode Femme", etat:"bon",   lieu:"Matam",   emoji:"👜", bg:"#FFF0E6", boost:false },
-  { id:6,  titre:"PC Lenovo ThinkPad i5",  prix:5800000,  don:false, cat:"Téléphones", etat:"bon",   lieu:"Ratoma",  emoji:"💻", bg:"#F0FDF4", boost:true  },
-  { id:7,  titre:"Livres scolaires lycée", prix:0,        don:true,  cat:"Autres",     etat:"bon",   lieu:"Dixinn",  emoji:"📚", bg:"#E8F5F0", boost:false },
-  { id:8,  titre:"PS5 + 3 jeux",          prix:9500000,  don:false, cat:"Électronique",etat:"bon",   lieu:"Ratoma",  emoji:"🎮", bg:"#EEF4FF", boost:true  },
-  { id:9,  titre:"Toyota Corolla 2018",    prix:95000000, don:false, cat:"Voitures",   etat:"bon",   lieu:"Kaloum",  emoji:"🚗", bg:"#F0F4FF", boost:false },
-  { id:10, titre:"G-Shock DW-5600",        prix:450000,   don:false, cat:"Mode Homme", etat:"neuf",  lieu:"Kaloum",  emoji:"⌚", bg:"#FFF8E1", boost:false },
-  { id:11, titre:"Canapé 3 places",        prix:1200000,  don:false, cat:"Maison",     etat:"bon",   lieu:"Ratoma",  emoji:"🛋️", bg:"#F5F0FF", boost:false },
-  { id:12, titre:"Vélo VTT 26 pouces",     prix:600000,   don:false, cat:"Sport",      etat:"bon",   lieu:"Matoto",  emoji:"🚲", bg:"#F0FFF4", boost:false },
-  { id:13, titre:"Chaussures enfant T32",  prix:0,        don:true,  cat:"Enfants",    etat:"bon",   lieu:"Dixinn",  emoji:"👟", bg:"#E8F5F0", boost:false },
-  { id:14, titre:"Frigo Samsung 200L",     prix:2800000,  don:false, cat:"Électronique",etat:"bon",  lieu:"Matam",   emoji:"🧊", bg:"#EFF6FF", boost:false },
-  { id:15, titre:"Guitare acoustique",     prix:500000,   don:false, cat:"Autres",     etat:"usage", lieu:"Ratoma",  emoji:"🎸", bg:"#FFF7ED", boost:false },
-]
+import { useArticles } from '../hooks/useArticles'
 
 const CATS = ["Toutes","Mode Femme","Mode Homme","Téléphones","Voitures","Électronique","Maison","Sport","Enfants","Motos","Autres"]
 const VILLES = ["Toutes","Conakry","Labé","Kankan","Kindia","N'Zérékoré"]
@@ -37,6 +20,7 @@ const etatLabel = e => ({ neuf:"Neuf", bon:"Bon état", usage:"Usagé" }[e])
 const etatClass = e => ({ neuf:"badge-neuf", bon:"badge-bon", usage:"badge-usage" }[e])
 
 export default function Explorer() {
+  const { articles, loading } = useArticles()
   const [search, setSearch] = useState("")
   const [cat,    setCat]    = useState("Toutes")
   const [ville,  setVille]  = useState("Toutes")
@@ -46,25 +30,25 @@ export default function Explorer() {
   const [showFilters, setShowFilters] = useState(false)
 
   const filtres = useMemo(() => {
-    let list = ARTICLES
+    let list = articles
     const p = PRIX_OPTIONS[prixIdx]
     if (p.don) list = list.filter(a => a.don)
     else list = list.filter(a => a.prix >= p.min && a.prix <= p.max)
     if (cat !== "Toutes") list = list.filter(a => a.cat === cat)
-    if (ville !== "Toutes") list = list.filter(a => a.lieu === ville || a.lieu.includes(ville))
+    if (ville !== "Toutes") list = list.filter(a => a.lieu === ville || a.lieu?.includes(ville))
     if (etat !== "Tous") {
       const map = { "Neuf":"neuf", "Bon état":"bon", "Usagé":"usage" }
       list = list.filter(a => a.etat === map[etat])
     }
     if (search.trim()) {
       const q = search.toLowerCase()
-      list = list.filter(a => a.titre.toLowerCase().includes(q) || a.lieu.toLowerCase().includes(q))
+      list = list.filter(a => a.titre?.toLowerCase().includes(q) || a.lieu?.toLowerCase().includes(q))
     }
-    if (sort === "prix-asc") list = [...list].sort((a,b) => a.prix - b.prix)
+    if (sort === "prix-asc")  list = [...list].sort((a,b) => a.prix - b.prix)
     if (sort === "prix-desc") list = [...list].sort((a,b) => b.prix - a.prix)
-    if (sort === "dons") list = [...list].sort((a,b) => b.don - a.don)
+    if (sort === "dons")      list = [...list].sort((a,b) => b.don - a.don)
     return list
-  }, [search, cat, ville, etat, prixIdx, sort])
+  }, [articles, search, cat, ville, etat, prixIdx, sort])
 
   const nbFiltresActifs = (cat !== "Toutes" ? 1:0) + (ville !== "Toutes" ? 1:0) +
     (etat !== "Tous" ? 1:0) + (prixIdx !== 0 ? 1:0)
@@ -84,7 +68,7 @@ export default function Explorer() {
             Explorer les annonces
           </h1>
           <p style={{ fontSize:15, color:"rgba(255,255,255,.5)" }}>
-            {ARTICLES.length} articles disponibles partout en Guinée
+            {loading ? '...' : articles.length} articles disponibles partout en Guinée
           </p>
           {/* Recherche */}
           <div style={{ marginTop:20, background:"rgba(255,255,255,.1)", border:"1.5px solid rgba(255,255,255,.15)",

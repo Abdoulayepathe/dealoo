@@ -82,11 +82,13 @@ export default function Navbar({ search = '', onSearch }) {
               )}
             </Link>
 
-            {/* Publier */}
-            <Link to="/publier" className="btn btn-green btn-sm"
-              style={{ display:'inline-flex', alignItems:'center', gap:5 }}>
-              <Plus size={16}/> Publier
-            </Link>
+            {/* Publier — caché pour les acheteurs */}
+            {(!profil || profil.type_compte !== 'acheteur') && (
+              <Link to="/publier" className="btn btn-green btn-sm"
+                style={{ display:'inline-flex', alignItems:'center', gap:5 }}>
+                <Plus size={16}/> Publier
+              </Link>
+            )}
 
             {/* Profil */}
             {user ? (

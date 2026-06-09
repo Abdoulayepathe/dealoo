@@ -240,6 +240,35 @@ export default function Publier() {
     }
   }
 
+  // ── Bloc acheteur (compte ne peut pas vendre) ────────────────
+  if (profil && profil.type_compte === 'acheteur') return (
+    <>
+      <Navbar />
+      <div style={{ minHeight:'70vh', display:'flex', alignItems:'center',
+        justifyContent:'center', padding:'40px 20px' }}>
+        <div style={{ background:'var(--white)', borderRadius:18,
+          padding:'48px 36px', maxWidth:520, width:'100%', textAlign:'center',
+          boxShadow:'0 10px 40px rgba(0,0,0,.08)' }}>
+          <div style={{ fontSize:64, marginBottom:16 }}>🛒</div>
+          <div style={{ fontSize:22, fontWeight:800, color:'var(--t1)', marginBottom:10 }}>
+            Compte acheteur
+          </div>
+          <p style={{ fontSize:14, color:'var(--t2)', lineHeight:1.6, marginBottom:24 }}>
+            Ton compte est configuré en mode <b>Acheteur uniquement</b>.
+            Pour publier des annonces, tu dois passer ton compte en mode <b>Vendeur</b> ou <b>Les deux</b>.
+          </p>
+          <Link to="/profil" className="btn btn-green btn-lg" style={{ marginBottom:10, display:'block' }}>
+            ⚙️ Modifier mon type de compte
+          </Link>
+          <Link to="/explorer" className="btn btn-outline btn-full">
+            ← Continuer à explorer
+          </Link>
+        </div>
+      </div>
+      <Footer />
+    </>
+  )
+
   // ── Page succès ───────────────────────────────────────────────
   if (succes) return (
     <>

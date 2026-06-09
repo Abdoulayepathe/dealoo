@@ -47,6 +47,15 @@ export default function FicheArticle() {
     }
     setSignalSending(true)
     try {
+      // ✅ Récupérer le vendeur_id directement depuis Firestore pour être sûr
+      let vendeurId = article.userId || article.utilisateur_id || ''
+      if (!vendeurId && (article.firestoreId || article.id)) {
+        try {
+          const snap = await getDoc(doc(db, 'annonces', article.firestoreId || article.id))
+          if (snap.exists()) vendeurId = snap.data().utilisateur_id || ''
+        } catch {}
+      }
+
       await addDoc(collection(db, 'signalements'), {
         annonce_id:       article.firestoreId || article.id,
         article_titre:    article.titre,
@@ -54,7 +63,7 @@ export default function FicheArticle() {
         raison_code:      raisonChoisie,
         signaleur_id:     user.uid,
         signaleur_email:  user.email,
-        vendeur_id:       article.userId || article.utilisateur_id || '',
+        vendeur_id:       vendeurId,
         statut:           'pending',
         date_signalement: serverTimestamp(),
       })
