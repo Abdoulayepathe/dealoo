@@ -14,7 +14,7 @@ import { CATS, VILLES } from '../data/articles'
 // CLOUDINARY CONFIG
 // Remplace par ton Cloud Name depuis cloudinary.com/console
 // ══════════════════════════════════════════════════════════════
-const CLOUDINARY_CLOUD_NAME = 'VOTRE_CLOUD_NAME'  // ← à remplacer
+const CLOUDINARY_CLOUD_NAME = 'dfbwxwntv'  // ← à remplacer
 const CLOUDINARY_UPLOAD_PRESET = 'dealoo_upload'   // ← à créer (voir README)
 const CLOUDINARY_URL = `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`
 
