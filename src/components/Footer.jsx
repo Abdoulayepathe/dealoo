@@ -45,29 +45,43 @@ export default function Footer() {
             <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.5px' }}>
               Aide
             </div>
-            {['Comment vendre ?', 'Comment acheter ?', 'Paiement sécurisé', 'Signaler un abus'].map(t => (
+            {['Comment vendre ?', 'Comment acheter ?', 'Le système DON 🤲', 'Signaler un abus'].map(t => (
               <div key={t} style={{ marginBottom: 8 }}>
                 <span style={{ color: 'rgba(255,255,255,.5)', fontSize: 14, cursor: 'pointer' }}>{t}</span>
               </div>
             ))}
           </div>
 
-          {/* Paiements */}
+          {/* Nous contacter */}
           <div>
             <div style={{ fontSize: 13, fontWeight: 700, color: '#fff', marginBottom: 12, textTransform: 'uppercase', letterSpacing: '.5px' }}>
-              Paiements acceptés
+              Nous contacter
             </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {['🟠 Orange Money', '🌊 Wave', '💚 MTN MoMo', '💳 Visa'].map(p => (
-                <span key={p} style={{ background: 'rgba(255,255,255,.08)', padding: '4px 10px', borderRadius: 8, fontSize: 12 }}>{p}</span>
-              ))}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <a href="https://wa.me/224624005418" target="_blank" rel="noreferrer"
+                style={{ display:'flex', alignItems:'center', gap:8,
+                  background:'rgba(37,211,102,.12)', border:'1px solid rgba(37,211,102,.25)',
+                  padding:'8px 12px', borderRadius:10, textDecoration:'none',
+                  color:'#25D366', fontSize:13, fontWeight:600 }}>
+                💬 WhatsApp DEALOO
+              </a>
+              <span style={{ display:'flex', alignItems:'center', gap:8,
+                background:'rgba(255,255,255,.06)', padding:'8px 12px',
+                borderRadius:10, fontSize:13, color:'rgba(255,255,255,.6)' }}>
+                📍 Conakry, Guinée
+              </span>
+              <span style={{ display:'flex', alignItems:'center', gap:8,
+                background:'rgba(255,255,255,.06)', padding:'8px 12px',
+                borderRadius:10, fontSize:13, color:'rgba(255,255,255,.6)' }}>
+                🕐 Disponible 7j/7
+              </span>
             </div>
           </div>
 
         </div>
 
         <div style={{ borderTop: '1px solid rgba(255,255,255,.08)', paddingTop: 24, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-          <div style={{ fontSize: 13 }}>© 2025 DEALOO — Marketplace guinéenne</div>
+          <div style={{ fontSize: 13 }}>© 2026 DEALOO — Marketplace guinéenne</div>
           <div style={{ fontSize: 13 }}>Fait avec ❤️ pour la Guinée 🇬🇳</div>
         </div>
       </div>
